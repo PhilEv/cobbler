@@ -93,7 +93,7 @@ class ModuleLoader:
             if not hasattr(blip, "register"):
                 if not modname.startswith("__init__"):
                     self.logger.debug(
-                        "%s/%s is not a proper module", self.mod_path, modname
+                        "%s.%s is not a proper module", self.mod_path, modname
                     )
                 return None
             category = blip.register()
@@ -143,11 +143,11 @@ class ModuleLoader:
         except Exception as exception:
             if fallback_module_name is None:
                 raise CX(
-                    "Cannot find config file setting for: %s/%s" % (category, field)
+                    "Cannot find config file setting for: %s.%s" % (category, field)
                 ) from exception
             value = fallback_module_name
             self.logger.warning(
-                'Requested module "%s/%s" not found. Using fallback module: "%s"',
+                'Requested module "%s.%s" not found. Using fallback module: "%s"',
                 category,
                 field,
                 value,
@@ -170,7 +170,7 @@ class ModuleLoader:
         module_name = self.get_module_name(category, field, fallback_module_name)
         requested_module = self.module_cache.get(module_name, None)
         if requested_module is None:
-            raise CX("Failed to load module for %s/%s" % (category, field))
+            raise CX("Failed to load module for %s.%s" % (category, field))
         return requested_module
 
     def get_modules_in_category(self, category: str) -> list:
